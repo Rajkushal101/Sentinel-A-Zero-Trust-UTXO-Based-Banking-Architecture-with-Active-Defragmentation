@@ -1,0 +1,328 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\admin\diagnostics.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel System Diagnostics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../common/api.js"></script>
+    <script src="../common/secure-storage.js"></script>
+    <script src="../common/security.js"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+    <style>
+        @keyframes scan {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .scan-line {
+            background: linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.15) 50%, transparent 100%);
+            animation: scan 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 15px 5px rgba(59, 130, 246, 0.15);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-950 text-slate-200 h-screen flex overflow-hidden" style="display:flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">S</div>
+            <div>
+                <h1 class="font-bold text-white tracking-wide">SENTINEL</h1>
+                <p class="text-[10px] text-blue-400 font-mono">CENTRAL BANK CORE</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="dashboard.html"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition">
+                <span>📊</span> Overview
+            </a>
+            <a href="mint.html"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition">
+                <span>🏦</span> Issue Currency
+            </a>
+            <a href="users.html"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition">
+                <span>👥</span> User Management
+            </a>
+            <a href="monitor.html"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-red-400 hover:text-red-300 rounded-xl transition">
+                <span>🚨</span> Security Monitor
+            </a>
+            <a href="diagnostics.html"
+                class="flex items-center gap-3 px-4 py-3 bg-amber-600/10 text-amber-400 rounded-xl border border-amber-600/20 font-medium">
+                <span>🩺</span> Diagnostics
+            </a>
+        <a href="defrag.html" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-purple-400 hover:text-purple-300 rounded-xl transition">
+                <span>🔧</span> Defrag & Transactions
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="logout()"
+                class="flex items-center gap-2 text-sm text-slate-500 hover:text-white transition w-full">
+                <span>🚪</span> Secure Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+        <header
+            class="bg-slate-900/50 backdrop-blur border-b border-slate-800 p-6 flex justify-between items-center sticky top-0 z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="text-amber-400">🩺</span> System Diagnostics
+                </h2>
+                <p class="text-sm text-slate-500 mt-1 font-mono">Deep System Health Analysis</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div id="overall-badge"
+                    class="px-4 py-2 bg-slate-800 text-slate-500 rounded-full text-sm font-mono border border-slate-700">
+                    AWAITING SCAN
+                </div>
+                <button onclick="runDiagnostics()" id="run-btn"
+                    class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition shadow-lg shadow-blue-900/30 flex items-center gap-2 pulse-glow">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    RUN DIAGNOSTICS
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-6xl mx-auto space-y-8">
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="summary-grid">
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 text-center">
+                    <p class="text-slate-500 text-xs uppercase font-mono">Total Checks</p>
+                    <h3 class="text-3xl font-bold text-white mt-1" id="total-checks">—</h3>
+                </div>
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 text-center">
+                    <p class="text-slate-500 text-xs uppercase font-mono">Passed</p>
+                    <h3 class="text-3xl font-bold text-emerald-400 mt-1" id="passed-checks">—</h3>
+                </div>
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 text-center">
+                    <p class="text-slate-500 text-xs uppercase font-mono">Warnings</p>
+                    <h3 class="text-3xl font-bold text-yellow-400 mt-1" id="warning-checks">—</h3>
+                </div>
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 text-center">
+                    <p class="text-slate-500 text-xs uppercase font-mono">Failed</p>
+                    <h3 class="text-3xl font-bold text-red-400 mt-1" id="failed-checks">—</h3>
+                </div>
+            </div>
+
+            <!-- Scan Animation Placeholder -->
+            <div id="scan-container"
+                class="hidden relative bg-slate-900/50 border border-blue-500/20 rounded-2xl p-12 overflow-hidden">
+                <div class="scan-line absolute inset-0 pointer-events-none"></div>
+                <div class="text-center relative z-10">
+                    <div class="text-5xl mb-4 animate-pulse">🔍</div>
+                    <h3 class="text-xl font-bold text-blue-400 font-mono tracking-widest animate-pulse">SCANNING
+                        SYSTEM...</h3>
+                    <p class="text-sm text-slate-500 mt-2">Running 9 comprehensive health checks</p>
+                </div>
+            </div>
+
+            <!-- Diagnostics Results -->
+            <div id="results-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-amber-400">📋</span> Detailed Results
+                    <span id="scan-timestamp" class="text-xs text-slate-500 font-mono ml-auto"></span>
+                </h3>
+                <div id="checks-list" class="space-y-3">
+                    <!-- Dynamic check cards injected here -->
+                </div>
+            </div>
+
+            <!-- Initial State -->
+            <div id="initial-state" class="text-center py-20">
+                <div class="text-7xl mb-6 opacity-30">🩺</div>
+                <h3 class="text-xl font-bold text-slate-500 mb-2">No Diagnostic Data</h3>
+                <p class="text-sm text-slate-600 max-w-md mx-auto">Click <span class="text-blue-400 font-bold">RUN
+                        DIAGNOSTICS</span> to perform a comprehensive system health check including database
+                    connectivity, table integrity, and configuration validation.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+            // ─── Auth Guard ───
+            (async function () {
+                let token = null, role = null;
+                if (window.secureStorage) {
+                    token = await window.secureStorage.getItem('sentinel_token');
+                    role = await window.secureStorage.getItem('sentinel_role');
+                }
+                if (!token) token = sessionStorage.getItem('sentinel_token');
+                if (!role) role = sessionStorage.getItem('sentinel_role');
+                if (!token || role !== 'admin') {
+                    window.location.href = '../auth/login.html';
+                } else {
+                    document.body.style.display = 'flex';
+                }
+            })();
+
+        async function getAuthHeaders() {
+    let token = null, fp = null;
+    if (window.secureStorage) {
+        token = await window.secureStorage.getItem('sentinel_token');
+        fp = await window.secureStorage.getItem('sentinel_device_fp');
+    }
+    if (!token) token = sessionStorage.getItem('sentinel_token');
+    if (!fp) fp = sessionStorage.getItem('sentinel_device_fp');
+    
+    let headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    };
+    if (fp) headers['X-Device-Fingerprint'] = fp;
+    return headers;
+}
+
+        async function runDiagnostics() {
+            const btn = document.getElementById('run-btn');
+            const scanContainer = document.getElementById('scan-container');
+            const resultsContainer = document.getElementById('results-container');
+            const initialState = document.getElementById('initial-state');
+            const overallBadge = document.getElementById('overall-badge');
+
+            // UI: Start scan
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block">⟳</span> SCANNING...`;
+            btn.classList.remove('pulse-glow');
+            initialState.classList.add('hidden');
+            resultsContainer.classList.add('hidden');
+            scanContainer.classList.remove('hidden');
+            overallBadge.innerHTML = 'SCANNING...';
+            overallBadge.className = 'px-4 py-2 bg-blue-900/30 text-blue-400 rounded-full text-sm font-mono border border-blue-900/50 animate-pulse';
+
+            try {
+                // Artificial delay for visual feedback
+                await new Promise(r => setTimeout(r, 1500));
+
+                const response = await fetch(`${API_BASE}/admin/diagnostics`, {
+                    headers: await getAuthHeaders()
+                });
+
+                if (!response.ok) throw new Error(`Server returned ${response.status}`);
+                const data = await response.json();
+
+                // Hide scan animation
+                scanContainer.classList.add('hidden');
+
+                // Update summary
+                document.getElementById('total-checks').innerText = data.summary.total_checks;
+                document.getElementById('passed-checks').innerText = data.summary.passed;
+                document.getElementById('warning-checks').innerText = data.summary.warnings;
+                document.getElementById('failed-checks').innerText = data.summary.failed;
+
+                // Update timestamp
+                const ts = new Date(data.timestamp);
+                document.getElementById('scan-timestamp').innerText = `Last scan: ${ts.toLocaleTimeString()}`;
+
+                // Overall badge
+                const badgeConfig = {
+                    'HEALTHY': { bg: 'bg-emerald-900/30', text: 'text-emerald-400', border: 'border-emerald-900/50', icon: '✅', label: 'ALL SYSTEMS HEALTHY' },
+                    'WARNING': { bg: 'bg-yellow-900/30', text: 'text-yellow-400', border: 'border-yellow-900/50', icon: '⚠️', label: 'WARNINGS DETECTED' },
+                    'CRITICAL': { bg: 'bg-red-900/30', text: 'text-red-400', border: 'border-red-900/50', icon: '🚨', label: 'CRITICAL ISSUES FOUND' }
+                };
+                const badge = badgeConfig[data.overall_status] || badgeConfig['CRITICAL'];
+                overallBadge.innerHTML = `${badge.icon} ${badge.label}`;
+                overallBadge.className = `px-4 py-2 ${badge.bg} ${badge.text} rounded-full text-sm font-mono font-bold border ${badge.border}`;
+
+                // Render check cards
+                const checksList = document.getElementById('checks-list');
+                checksList.innerHTML = data.checks.map((check, idx) => {
+                    const statusConfig = {
+                        'PASS': { icon: '✅', bg: 'border-emerald-900/30', text: 'text-emerald-400', badge: 'bg-emerald-900/20 text-emerald-400 border-emerald-900/50' },
+                        'WARNING': { icon: '⚠️', bg: 'border-yellow-900/30', text: 'text-yellow-400', badge: 'bg-yellow-900/20 text-yellow-400 border-yellow-900/50' },
+                        'FAIL': { icon: '❌', bg: 'border-red-900/30', text: 'text-red-400', badge: 'bg-red-900/20 text-red-400 border-red-900/50' }
+                    };
+                    const cfg = statusConfig[check.status] || statusConfig['FAIL'];
+                    const rowCountHtml = check.row_count !== undefined ?
+                        `<span class="text-xs font-mono bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-700">${check.row_count} rows</span>` : '';
+
+                    return `
+                        <div class="bg-slate-900 border ${cfg.bg} rounded-xl p-5 flex items-start gap-4 hover:border-slate-600 transition group">
+                            <div class="text-2xl mt-0.5">${cfg.icon}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <h4 class="font-bold text-white text-sm">${check.name}</h4>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${cfg.badge}">${check.status}</span>
+                                    ${rowCountHtml}
+                                </div>
+                                <p class="text-sm ${cfg.text} opacity-80 font-mono">${check.details}</p>
+                            </div>
+                            <div class="text-xs text-slate-600 font-mono w-8 text-right shrink-0">#${idx + 1}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Show results
+                resultsContainer.classList.remove('hidden');
+
+            } catch (error) {
+                scanContainer.classList.add('hidden');
+                overallBadge.innerHTML = '❌ SCAN FAILED';
+                overallBadge.className = 'px-4 py-2 bg-red-900/30 text-red-400 rounded-full text-sm font-mono font-bold border border-red-900/50';
+
+                // Show error in results
+                const checksList = document.getElementById('checks-list');
+                checksList.innerHTML = `
+                    <div class="bg-red-950/30 border border-red-900/50 rounded-xl p-6 text-center">
+                        <div class="text-4xl mb-3">💥</div>
+                        <h4 class="text-lg font-bold text-red-400 mb-2">Diagnostics Failed</h4>
+                        <p class="text-sm text-red-300/70 font-mono">${error.message}</p>
+                        <p class="text-xs text-slate-500 mt-3">Check that the backend is running and you are authenticated as admin.</p>
+                    </div>
+                `;
+                resultsContainer.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    RE-RUN DIAGNOSTICS`;
+                btn.classList.add('pulse-glow');
+            }
+        }
+
+        function logout() {
+            if (window.secureStorage) window.secureStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+</body>
+
+</html>

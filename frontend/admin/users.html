@@ -1,0 +1,152 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\admin\users.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel User Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../common/api.js"></script>
+    <script src="../common/secure-storage.js"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+</head>
+
+<body class="bg-slate-950 text-slate-200 h-screen flex" style="display:flex">
+
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6">
+        <h1 class="font-bold text-white tracking-wide mb-8">SENTINEL <span class="text-blue-500">ADMIN</span></h1>
+        <a href="dashboard.html" class="block py-2 text-slate-400 hover:text-white">← Back to Dashboard</a>
+    </aside>
+
+    <main class="flex-1 p-10 overflow-y-auto">
+        <h2 class="text-3xl font-bold text-white mb-6">User Registry</h2>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-950 text-slate-500 border-b border-slate-800">
+                    <tr>
+                        <th class="p-6 font-medium">Identity</th>
+                        <th class="p-6 font-medium">Role</th>
+                        <th class="p-6 font-medium">Status</th>
+                        <th class="p-6 font-medium">Created</th>
+                        <th class="p-6 text-right font-medium">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table-body" class="divide-y divide-slate-800">
+                    <tr>
+                        <td colspan="5" class="p-6 text-center text-slate-500">Loading users...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+            // Admin Session Check
+            (async function () {
+                let token = null, role = null;
+                if (window.secureStorage) {
+                    token = await window.secureStorage.getItem('sentinel_token');
+                    role = await window.secureStorage.getItem('sentinel_role');
+                }
+                if (!token) token = sessionStorage.getItem('sentinel_token');
+                if (!role) role = sessionStorage.getItem('sentinel_role');
+                if (!token || role !== 'admin') {
+                    window.location.href = '../auth/login.html';
+                } else {
+                    document.body.style.display = 'flex';
+                }
+            })();
+
+        async function getAuthHeaders() {
+    let token = null, fp = null;
+    if (window.secureStorage) {
+        token = await window.secureStorage.getItem('sentinel_token');
+        fp = await window.secureStorage.getItem('sentinel_device_fp');
+    }
+    if (!token) token = sessionStorage.getItem('sentinel_token');
+    if (!fp) fp = sessionStorage.getItem('sentinel_device_fp');
+    
+    let headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    };
+    if (fp) headers['X-Device-Fingerprint'] = fp;
+    return headers;
+}
+
+        document.addEventListener('DOMContentLoaded', loadUsers);
+
+        async function loadUsers() {
+            const tbody = document.getElementById('user-table-body');
+            try {
+                const resp = await fetch(`${API_BASE}/admin/users`, { headers: await getAuthHeaders() });
+                if (!resp.ok) throw new Error('Failed to load users');
+                const users = await resp.json();
+
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-slate-500">No users found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = users.map(u => {
+                    const isFrozen = u.is_frozen || u.status === 'FROZEN';
+                    const statusBadge = isFrozen
+                        ? '<span class="bg-red-900/30 text-red-400 px-2 py-1 rounded text-xs border border-red-900/50 font-bold">FROZEN</span>'
+                        : '<span class="bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded text-xs border border-emerald-900/50 font-bold">ACTIVE</span>';
+
+                    const roleBadge = u.role === 'admin'
+                        ? '<span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded text-xs border border-blue-900/50 font-bold">ADMIN</span>'
+                        : '<span class="bg-slate-800 text-slate-400 px-2 py-1 rounded text-xs border border-slate-700 font-bold">USER</span>';
+
+                    const actionBtn = isFrozen
+                        ? `<button onclick="toggleFreeze('${u.user_id}', false)" class="text-sm bg-emerald-900/20 hover:bg-emerald-600 hover:text-white text-emerald-400 border border-emerald-900/50 px-3 py-2 rounded-lg transition">🔓 Unfreeze</button>`
+                        : `<button onclick="toggleFreeze('${u.user_id}', true)" class="text-sm bg-red-900/20 hover:bg-red-600 hover:text-white text-red-400 border border-red-900/50 px-3 py-2 rounded-lg transition">❄️ Freeze</button>`;
+
+                    const created = u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A';
+
+                    return `<tr class="hover:bg-slate-800/50 transition">
+                        <td class="p-6">
+                            <div class="font-bold text-white">${u.username}</div>
+                            <div class="text-xs text-slate-500 font-mono">UUID: ${u.user_id.substring(0, 12)}...</div>
+                        </td>
+                        <td class="p-6">${roleBadge}</td>
+                        <td class="p-6">${statusBadge}</td>
+                        <td class="p-6 text-sm text-slate-400">${created}</td>
+                        <td class="p-6 text-right">${u.role !== 'admin' ? actionBtn : '<span class="text-xs text-slate-600">Protected</span>'}</td>
+                    </tr>`;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-red-400">Error: ${e.message}</td></tr>`;
+            }
+        }
+
+        async function toggleFreeze(userId, freeze) {
+            const action = freeze ? 'FREEZE' : 'UNFREEZE';
+            if (!confirm(`⚠️ FORENSIC ACTION\n\nAre you sure you want to ${action} this wallet? This action is logged.`)) return;
+
+            const reason = freeze ? prompt('Reason for freezing (optional):') || 'Admin action' : undefined;
+
+            try {
+                const resp = await fetch(`${API_BASE}/admin/freeze`, {
+                    method: 'POST',
+                    headers: await getAuthHeaders(),
+                    body: JSON.stringify({ user_id: userId, freeze: freeze, reason: reason })
+                });
+                if (!resp.ok) {
+                    const data = await resp.json().catch(() => ({}));
+                    throw new Error(data.message || 'Action failed');
+                }
+                alert(`User ${action.toLowerCase()}d successfully. Audit log updated.`);
+                loadUsers(); // Refresh table
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

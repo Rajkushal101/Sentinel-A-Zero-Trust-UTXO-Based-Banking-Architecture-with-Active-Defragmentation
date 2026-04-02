@@ -1,0 +1,39 @@
+# C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\docker\Dockerfile.backend
+
+# --- Stage 1: Builder (Compiles the Rust Code) ---
+FROM rust:1.88-slim-bookworm AS builder
+
+WORKDIR /usr/src/app
+
+# Install build dependencies (OpenSSL is required for SQLx)
+RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+
+# Enable SQLx offline mode (no DB needed at compile time)
+ENV SQLX_OFFLINE=true
+
+# Cache dependency build step to speed up Docker builds
+COPY Cargo.toml .
+# Create a dummy main.rs to build dependencies
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN cargo build --release
+RUN rm -rf src
+
+# Copy actual source code
+COPY . .
+# Touch main.rs to ensure rebuild
+RUN touch src/main.rs
+RUN cargo build --release
+
+# --- Stage 2: Runtime (Minimal Image) ---
+FROM debian:bookworm-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy binary from builder
+COPY --from=builder /usr/src/app/target/release/sentinel-core /app/sentinel-core
+
+# Run the Sovereign Core
+CMD ["./sentinel-core"]

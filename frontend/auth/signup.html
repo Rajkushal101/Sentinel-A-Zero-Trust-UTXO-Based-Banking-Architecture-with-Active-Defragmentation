@@ -1,0 +1,67 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\auth\signup.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel Wallet Creation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../common/api.js"></script>
+    <script src="../common/security.js"></script>
+    <script src="../common/captcha.js"></script>
+    <script src="signup.js" defer></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-200 h-screen flex flex-col justify-center items-center">
+
+    <div class="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
+        
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-white">Initialize Wallet</h2>
+            <p class="text-slate-500 text-sm mt-1">Create a Sovereign Identity on the Ledger.</p>
+        </div>
+
+        <form id="signupForm" class="space-y-4">
+            
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-1 uppercase">Choose Identity (Username)</label>
+                <input type="text" id="username" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:border-green-500 outline-none text-white" placeholder="e.g. satoshi_v2">
+            </div>
+
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-1 uppercase">Passphrase</label>
+                <input type="password" id="password" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:border-green-500 outline-none text-white font-mono" placeholder="••••••••">
+                <!-- Complexity Indicator -->
+                <div class="flex gap-1 mt-2 h-1">
+                    <div id="strength-1" class="flex-1 bg-slate-800 rounded-full transition"></div>
+                    <div id="strength-2" class="flex-1 bg-slate-800 rounded-full transition"></div>
+                    <div id="strength-3" class="flex-1 bg-slate-800 rounded-full transition"></div>
+                </div>
+            </div>
+
+            <!-- CAPTCHA -->
+            <div class="pt-2">
+                <div id="captcha-image" class="w-full h-16 bg-white rounded flex items-center justify-center overflow-hidden mb-2"></div>
+                <div class="flex gap-2">
+                    <input type="text" id="captcha-answer" class="flex-1 bg-slate-950 border border-slate-700 p-3 rounded-lg focus:border-green-500 outline-none text-white text-center uppercase" placeholder="CAPTCHA">
+                    <button type="button" onclick="captchaHandler.refresh()" class="bg-slate-800 hover:bg-slate-700 text-white px-3 rounded-lg text-xl">↻</button>
+                </div>
+                <input type="hidden" id="captcha-id">
+            </div>
+
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-green-900/20 mt-2">
+                GENERATE KEYS
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="login.html" class="text-sm text-slate-500 hover:text-green-400 transition">← Return to Login</a>
+        </div>
+        
+        <div id="status-msg" class="mt-4 text-center text-xs font-mono h-4 text-red-400"></div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+SENTINEL BANKING SYSTEM
+Anonymous Authors
+Anonymous Affiliation
+anonymous@research.net
+ABSTRACT
+The rapid digitization of financial systems has accel-
+erated the development of secure and scalable digital
+banking platforms. Modern banking infrastructures
+must support high transaction throughput, strong se-
+curity guarantees, and efficient data management while
+maintaining strict financial auditability. This paper
+presents the Sentinel Banking System, a prototype dig-
+ital banking architecture designed to explore secure
+transaction processing, optimized data structures, and
+zero-trust security principles.
+Sentinel adopts a token-based ledger architecture
+inspired by the Unspent Transaction Output (UTXO)
+model. While UTXO structures provide strong au-
+ditability and protection against double spending, they
+introduce a structural issue known as wallet fragmen-
+tation, where repeated transactions generate a large
+number of small tokens. Over time this increases
+database complexity and transaction latency.
+To address this issue, the Sentinel system introduces
+an Active Defragmentation Engine that consolidates
+fragmented tokens into optimized structures while pre-
+serving full financial audit trails. The system is im-
+plemented using a Rust backend with the Axum web
+framework, a PostgreSQL relational database, and a
+client ecosystem consisting of Android and web inter-
+faces. The architecture integrates cryptographic au-
+thentication, encrypted client sessions, and administra-
+tive monitoring tools. The proposed system demon-
+strates how optimized token management can signif-
+icantly improve transaction performance and system
+scalability in modern digital banking environments.
+1. INTRODUCTION
+Digital transformation has significantly changed the archi-
+tecture of financial systems. Traditional banking platforms
+are increasingly evolving toward fully digital infrastruc-
+tures that support secure, high-speed transactions across
+web and mobile platforms. As transaction volumes in-
+crease, financial systems must maintain strong guarantees
+for security, consistency, and performance.
+© Anonymous Author. Licensed under a Creative Com-
+mons Attribution 4.0 International License (CC BY 4.0).Attribution:
+Anonymous Author, “Sentinel Banking System�, inProc. of the 27th Int.
+Society for Music Information Retrieval Conf.,Abu Dhabi, UAE, 2026.One promising approach to digital financial infrastruc-
+ture is the token-based transaction model, where value is
+represented by discrete tokens rather than simple account
+balances. This approach improves auditability and transac-
+tion traceability because each token represents a verifiable
+unit of value.
+However, token-based systems introduce a key perfor-
+mance challenge known aswallet fragmentation. Re-
+peated transactions generate numerous small tokens that
+accumulate within a user’s wallet. As the number of tokens
+increases, the cost of verifying and processing transactions
+also increases.
+TheSentinel Banking Systemwas developed as a pro-
+totype platform to explore solutions to this challenge. The
+system introduces an Active Defragmentation Engine that
+consolidates fragmented tokens while preserving the in-
+tegrity of the financial ledger.
+2. TOKEN-BASED BANKING MODEL
+In the Sentinel system, financial value is represented by to-
+kens stored within a ledger database. Each token contains
+three core properties:
+• A unique token identifier
+• The owner account identifier
+• The value associated with the token
+When a transaction occurs, tokens are consumed and
+new tokens are generated. For example, if a user owns a
+token worth $50 and sends $10 to another user, the system
+performs the following operations:
+• The original $50 token is marked as spent.
+• A new $10 token is generated for the recipient.
+• A $40 token is returned to the sender as change.
+While this structure ensures traceability and prevents
+double spending, it gradually produces many small tokens.
+This accumulation leads to wallet fragmentation and in-
+creases database query complexity.
+3. SYSTEM ARCHITECTURE
+The Sentinel Banking System consists of three major com-
+ponents:
+•Sentinel Core: A Rust-based backend responsible
+for transaction processing and ledger validation.
+•Sentinel Vault: A PostgreSQL database that stores
+token records and transaction history.
+•Client Applications: Web and Android applications
+that interact with the backend via secure APIs.
+1
+Proceedings of the 27th ISMIR Conference, Abu Dhabi, UAE, November 08–12, 2026
+Figure 1. Sentinel Banking System Architecture showing the user interface layer, security gateway, backend API, banking
+core modules, defragmentation engine, and PostgreSQL database.
+The backend is implemented using theAxum frame-
+workin Rust, which provides asynchronous request han-
+dling and high concurrency support. PostgreSQL provides
+reliable transactional guarantees and strong consistency for
+financial data.
+4. ACTIVE DEFRAGMENTATION ENGINE
+A key innovation of the Sentinel Banking System is the
+Active Defragmentation Engine. This component opti-
+mizes wallet structures by consolidating multiple small to-
+kens into a single token with equivalent value.
+The algorithm follows several steps:
+•Token Locking
+The system retrieves all tokens belonging to a user
+using a database query with row-level locking. This
+ensures that no other transaction can modify the to-
+kens during optimization.
+•Value Aggregation
+All tokens are collected and their values are
+summed. If the wallet contains fewer than two to-
+kens, the defragmentation process is skipped.
+•Token Consolidation
+Existing tokens are marked as consolidated in the
+database. These tokens remain visible for auditing
+purposes but cannot be reused.
+•New Token Generation
+A new token is created with the total aggregated
+value.
+•Ledger Recording
+A transaction record is inserted into the ledger to
+document the defragmentation event.
+•Atomic Transaction Commit
+All steps occur inside a database transaction to en-sure atomicity and prevent partial updates.
+This approach significantly reduces the number of to-
+kens stored in a wallet and improves transaction processing
+efficiency.
+5. SECURITY ARCHITECTURE
+Security is a fundamental requirement of any banking plat-
+form. Sentinel integrates several cryptographic security
+mechanisms.
+5.1 Authentication
+User authentication is implemented using JSON Web To-
+kens (JWT). Each session token is linked to a device fin-
+gerprint, preventing unauthorized reuse of stolen tokens.
+5.2 Password Protection
+Passwords are hashed using the Argon2id algorithm, which
+provides strong resistance against brute force and GPU-
+based password attacks.
+5.3 Encrypted Client Storage
+Sensitive authentication tokens are encrypted on the client
+side using AES-256-GCM encryption. This protects ses-
+sion data from exposure in browser storage environments.
+6. MOBILE BANKING INTEGRATION
+Sentinel includes an Android mobile application that en-
+ables users to perform financial transactions securely.
+The mobile application communicates with the backend
+through encrypted API requests.
+Proceedings of the 27th ISMIR Conference, Abu Dhabi, UAE, November 08–12, 2026
+Android foreground services are used to ensure that crit-
+ical transaction processes are not interrupted by the op-
+erating system. The mobile application also allows users
+to trigger wallet optimization through the defragmentation
+engine.
+This reduces the amount of transaction data that must
+be transmitted over mobile networks and improves appli-
+cation responsiveness.
+7. ADMINISTRATIVE CONTROLS
+Financial institutions require administrative tools to main-
+tain operational control. The Sentinel system includes sev-
+eral administrative features:
+•Global Transaction Kill Switch: Allows adminis-
+trators to temporarily disable all transactions.
+•Account Freezing: Suspicious accounts can be re-
+stricted from performing transactions.
+•System Diagnostics: Monitors database perfor-
+mance and ledger consistency.
+8. CONCLUSION
+The Sentinel Banking System demonstrates how modern
+digital banking platforms can combine secure ledger ar-
+chitectures, optimized data structures, and cryptographic
+security mechanisms. By introducing an Active Defrag-
+mentation Engine, the system addresses the wallet frag-
+mentation problem inherent in token-based financial sys-
+tems.
+The integration of a Rust backend, PostgreSQL
+database infrastructure, and secure client applications pro-
+vides a robust foundation for scalable digital banking en-
+vironments. Future work may include distributed ledger
+scaling, advanced cryptographic verification, and integra-
+tion with national digital currency infrastructures.
+9. REFERENCES
+

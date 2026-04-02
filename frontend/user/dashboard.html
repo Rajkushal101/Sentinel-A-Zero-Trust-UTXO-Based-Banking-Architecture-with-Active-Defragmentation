@@ -1,0 +1,97 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\user\dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel Wallet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../common/api.js"></script>
+    <script src="../common/secure-storage.js"></script>
+    <script src="../common/security.js"></script>
+    <script src="dashboard.js" defer></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-200 h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white">S</div>
+            <div>
+                <h1 class="font-bold text-white tracking-wide">SENTINEL</h1>
+                <p class="text-[10px] text-emerald-400 font-mono">SOVEREIGN WALLET</p>
+            </div>
+        </div>
+        
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-emerald-600/10 text-emerald-400 rounded-xl border border-emerald-600/20 font-medium">
+                <span>💳</span> My Wallet
+            </a>
+            <a href="transfer.html" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition">
+                <span>💸</span> Send Money
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition opacity-50 cursor-not-allowed" title="Coming Soon">
+                <span>📜</span> History
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <div class="mb-4 px-4">
+                <p class="text-xs text-slate-500 uppercase font-mono mb-1">Security Level</p>
+                <div class="flex items-center gap-2 text-green-400 text-xs font-bold">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    ENCRYPTED
+                </div>
+            </div>
+            <button onclick="logout()" class="flex items-center gap-2 text-sm text-slate-500 hover:text-white transition w-full px-4 py-2 hover:bg-slate-800 rounded-lg">
+                <span>🚪</span> Disconnect
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+        <header class="bg-slate-900/50 backdrop-blur border-b border-slate-800 p-6 sticky top-0 z-10">
+            <h2 class="text-2xl font-bold text-white">Wallet Overview</h2>
+        </header>
+
+        <div class="p-8 max-w-5xl mx-auto space-y-8">
+            
+            <!-- Balance Card -->
+            <div class="bg-gradient-to-br from-emerald-900/40 to-slate-900 border border-emerald-500/20 p-8 rounded-3xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10 text-9xl text-emerald-500 font-serif">₹</div>
+                
+                <p class="text-slate-400 text-sm font-mono uppercase tracking-widest mb-2">Total Digital Cash</p>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-2xl text-emerald-500 font-bold">₹</span>
+                    <h1 class="text-6xl font-bold text-white tracking-tight" id="balance-display">--.--</h1>
+                </div>
+                
+                <div class="mt-6 flex gap-4">
+                    <div class="px-4 py-2 bg-slate-950/50 rounded-lg border border-slate-700/50 text-xs text-slate-300 font-mono">
+                        UTXO Count: <span id="utxo-count" class="text-white font-bold">--</span>
+                    </div>
+                    <div class="px-4 py-2 bg-slate-950/50 rounded-lg border border-slate-700/50 text-xs text-slate-300 font-mono">
+                        Status: <span class="text-emerald-400 font-bold">ACTIVE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualizer (Placeholder for Research Demo) -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">Digital Notes (UTXO Visualizer)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="utxo-grid">
+                    <!-- Dynamic Notes will be injected here via JS -->
+                    <div class="h-24 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center text-slate-600 text-sm animate-pulse">
+                        Syncing Ledger...
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

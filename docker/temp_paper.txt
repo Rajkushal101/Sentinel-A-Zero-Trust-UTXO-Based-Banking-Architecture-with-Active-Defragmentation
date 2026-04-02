@@ -1,0 +1,517 @@
+ANVESHAN
+:
+ A
+ Smart Security Advisory System for Internet
+-Connected Devices Using Image 
+Recognition
+ and
+ Chatbo
+t Interaction
+ 
+Soumika A, 
+S. Saravanan
+1
+,
+ 
+Arun
+ Kumar R
+2
+, 
+Ka
+rthik
+ S
+3
+1 
+Dep
+artment
+ of Computer Science and Engineering, 
+Amrita school of computing, 
+Chennai
+,
+ Amrita Vishwa Vidyapeetham, India
+2
+D
+igital Forensics and Cyber Security
+, University of South Wales, Treforest, United Kingdom
+ 
+3
+ 
+Department of 
+C
+omputer 
+S
+cience and 
+B
+usiness 
+S
+ystems,Muthayammal
+ Engineering College
+ (Autonomous)
+,
+Rasipuram,Namakkal
+ Dt,
+ 
+India
+1
+addalasoumika@gmail.com,
+ 
+1
+s_saravanan@ch.amrita.edu
+, 
+2
+arun.kumar@southwales.ac.uk
+, 
+3
+kanagasundaram.k@nokia.com
+Abstract
+:
+ 
+In an era dominated by the Internet of Things (IoT) and interconnected devices, securing these devices has become a significant challenge. A major problem is the users' limited understanding of the specific security protocols required for their devices. Consequently, individuals often 
+fail to
+ implement 
+appropriate security
+ settings in their devices, which can result in potential breaches of personal data, unauthorized access, or even large-scale network attacks. To address this issue, Anveshan has been developed as a sophisticated web application aimed at simplifying the process of securing networking and IoT devices for users. The application employs AI-powered image recognition technology to 
+identify
+ device types based on user-uploaded photos. It then provides customized instructions for configuring security settings specific to the recognized device, maximizing protection. Additionally, the application incorporates an interactive chatbot that provides detailed, sequential instructions for implementing these security protocols and responds to user inquiries related to device security. Anveshan's user-friendly interface makes it accessible to individuals with varying levels of technical 
+expertise
+, ensuring that even those with limited knowledge can effectively secure their devices. The application's artificial intelligence-based method not only simplifies the process of configuring security settings but also customizes device security setup for users. By empowering users to take control of their device security, Anveshan contributes to a safer digital ecosystem and reduces the risk of cyber-attacks on both individual and network levels.
+Keywords: 
+IoT security, AI-powered image recognition, device security protocols, interactive chatbot, user-friendly interface, cybersecurity, personalized security settings, network attack prevention
+Introduction 
+The widespread adoption of Internet of Things (IoT) technology has revolutionized how people and organizations engage with digital systems [1] [2]. Connected devices, ranging from household gadgets to industrial control mechanisms, have become essential components of contemporary digital frameworks. However, this heightened connectivity has also introduced a significant security risk, as many users lack the necessary knowledge to implement proper security measures for their devices [3]. Cybercriminals frequently take advantage of inadequate or improperly configured security measures, resulting in unauthorized entry, information leaks, and extensive network intrusions [4]. 
+To bridge this gap, there is an urgent demand for user-friendly tools that streamline the process of securing IoT and networking devices. This study presents Anveshan, an artificial intelligence-powered web platform designed to bolster device security through visual recognition and interactive guidance. By automatically detecting device types from user-submitted images and offering customized security configurations, Anveshan enables users to effectively protect their devices. Anveshan leverages advanced computer vision techniques to analyze device images and identify specific models or categories. Once a device is recognized, the platform provides step-by-step instructions tailored to that particular device's security requirements. These instructions cover essential aspects such as firmware updates, password management, and network configuration, ensuring comprehensive protection against common vulnerabilities.
+A notable aspect of Anveshan is its incorporation of a smart chatbot that improves user experience by providing detailed, sequential security implementation assistance. The chatbot not only delivers comprehensive, step-by-step instructions for setting up security measures but also addresses user questions in real-time, ensuring clear and straightforward implementation. By enabling users to pose specific security-related inquiries and receive immediate guidance, the chatbot makes device security more accessible to individuals. This interactive feature significantly reduces the learning curve associated with implementing complex security protocols, making it easier for users of all technical backgrounds to secure their devices effectively. The chatbot's ability to provide contextual information and clarify doubts on the spot helps users make informed decisions about their security settings, leading to more robust protection overall. Furthermore, by offering a personalized and responsive approach to security guidance, Anveshan's chatbot fosters greater user engagement and encourages consistent adherence to best security practices. This research explores Anveshan's design, functionality, and influence on user security practices. Through its AI-driven approach, the application not only simplifies device security but also promotes a safer digital landscape by mitigating cybersecurity threats.
+Below listed are the contributions of this paper:
+Automated Device Recognition:
+ Utilizes advanced computer vision techniques to identify device models or categories from user-submitted images.
+Customized Security Guidance:
+ Provides step-by-step security instructions tailored to the specific device, covering firmware updates, password management, and network configuration.
+Interactive AI Chatbot:
+ Integrates a smart chatbot that assists users by delivering real-time security instructions and addressing queries for better implementation.
+User-Friendly Security Enhancement:
+ Reduces the complexity of implementing security protocols, making cybersecurity measures accessible to users of all technical backgrounds.
+Promotes a Safer Digital Environment:
+ Helps prevent unauthorized access, data breaches, and network intrusions by guiding users toward proper security configurations.
+Related Work
+  
+Large Language Models have been successfully deployed in various domains [5-7], including customer service [8-9], education [9-10], healthcare support [11-12], legal document analysis [13-14], financial advisory [15-16], travel planning [17-18], technical support [19], language translation [20-21] and content creation [22-23], to create interactive chatbots. However, the rapidly expanding landscape of IoT devices presents unique security challenges [24]. While existing security measures often rely on technical manuals or complex software, these approaches 
+frequently
+ 
+fail
+ to
+ 
+address
+ 
+the
+ 
+needs
+ 
+of
+ 
+non-technical
+ 
+users
+. 
+Notably
+, 
+there
+ 
+is
+ a 
+significant
+ 
+gap
+ 
+in
+ 
+the
+ 
+literature
+ 
+regarding
+ 
+the
+ 
+application
+ 
+of
+ LLM-
+powered
+ 
+chatbots
+ to 
+assist
+ 
+users
+ 
+in
+ 
+configuring
+ 
+security
+ 
+settings
+ 
+for
+ 
+their
+ 
+IoT
+ 
+devices
+. 
+This
+ 
+research
+ 
+aims
+ to 
+address
+ 
+this
+ 
+gap
+ 
+by
+ 
+developing
+ 
+Anveshan
+, a 
+system
+ 
+that
+ 
+leverages
+ 
+an
+ LLM to 
+provide
+ 
+personalized
+ 
+and
+ 
+interactive
+ 
+security
+ 
+guidance
+System Architecture and Implementation
+ 
+Fig. 1 illustrates the architecture of Anveshan, a web application designed to simplify device security through AI-powered image recognition and a conversational chatbot. The system architecture is built around a modular design, enabling seamless integration of various components to achieve its goal of 
+providing
+ customized security guidance.
+ 
+Fig.1: 
+System architecture of Anveshan, designed to streamline security measures for device-specific applications
+1. User Interface (UI):
+The application's front-end is developed using Python's Streamlit framework, chosen for its ability to create interactive and user-friendly web interfaces rapidly. This allows users with varying technical expertise to easily navigate and utilize Anveshan's features. The UI guides users through the process of uploading device images and interacting with the chatbot, ensuring a smooth and intuitive experience.
+2. Image Hosting and Management:
+Upon uploading a device image (e.g., smartphone, router, IoT device), the application utilizes ImgBB, a cloud-based image hosting service. ImgBB generates a publicly accessible URL for the uploaded image, facilitating its accessibility for subsequent processing by the Pixtral model. This step ensures efficient image management and streamlined data flow within the system.
+3. Pixtral Model for Device Recognition:
+The core of Anveshan's device identification capability lies in the Pixtral model. This computer vision model is trained to recognize and classify a wide range of devices based on their visual features. By analyzing the image URL provided by ImgBB, Pixtral accurately identifies the brand and model of the uploaded device. This identification process is crucial for providing tailored security recommendations.
+4. Fine-Tuned Mistral Model for Chatbot and Security Guidance:
+The identified device information is then passed to a fine-tuned Mistral Large Language Model (LLM). This LLM serves two primary functions: providing tailored security guidance and powering the interactive chatbot.
+Fine-Tuning via Hugging Face: The Mistral model is fine-tuned using Hugging Face's pre-trained models and tools.
+This customization process enhances the model's ability to deliver 
+accurate
+ and relevant security recommendations.
+Device Dataset Integration: The Mistral model accesses a comprehensive device dataset containing information about various devices, including their brands, models, firmware versions, known vulnerabilities, and security best practices. This dataset enables the model to check for exact device matches and retrieve pertinent security information.
+Security Recommendation Generation: 
+Exact Match: If an exact match is found in the device dataset, the Mistral model provides precise, device-specific security recommendations, such as firmware updates and vulnerability alerts.
+Generalized Recommendations: In cases where an exact match is not found, the model leverages learned patterns and similarities to generate generalized security recommendations based on comparable devices.
+Interactive Chatbot: The Mistral model also powers the application's chatbot. Users can interact with the chatbot to ask security-related questions about their devices. The chatbot processes these queries and generates responses, dynamically refining them based on follow-up questions and additional context.
+5. System Workflow:
+Image Upload: The user uploads an image of their device via the UI.
+Image Hosting: The image is hosted on ImgBB, generating a public URL.
+Device Recognition: The Pixtral model analyzes the image URL to identify the device's brand and model.
+Security Guidance: The identified information is sent to the fine-tuned Mistral model. 
+The model checks the device dataset for an exact match.
+If an exact match is found, precise security recommendations are provided.
+If no exact match is found, generalized recommendations are generated.
+Chatbot Interaction: The user interacts with the chatbot for further security assistance.
+Response Delivery: Tailored or generalized security guidance and chatbot responses are returned to the user through the UI.
+   
+Results
+Case 1: Apple Watch Series 6
+Upon uploading an image of the Apple Watch Series 6
+ (fig.2)
+, Anveshan successfully 
+identified
+ the device and presented a set of specific security measures relevant to this model. These recommendations included “enabling strong passcodes," "lock apple watch automatically", "configuring notification privacy ". 
+Following the provision of security measures, the chatbot interface prompted the user to ask any related questions.
+The chatbot was then engaged with two user prompts: "Can I adjust the number of failed unlock attempts to 5 failed unlock attempts?" and "Can I hide notification details just from specific contact?". The chatbot responded accurately and comprehensively to both queries, providing detailed, step-by-step instructions and explanations, demonstrating its ability to deliver context-aware support.
+Case 2: Apple HomePod Mini
+In the second test case, an image of the Apple HomePod Mini was uploaded. Anveshan again accurately identified the device and generated a set of security recommendations specific to the HomePod Mini, such as, "turning off location services on home pod," "limit ad tracking through device settings","keeping the app regularly updated". This result confirms the system's consistent performance across different device categories.
+Case 3: D-Link Wireless Router
+Finally, an image of a D-Link wireless router was
+ uploaded. The system successfully recognized the router and provided relevant security measures, including "changing the default admin password," "disabling 
+wps
+", "disabling remote management". This test highlights Anveshan’s ability to handle network devices, 
+demonstrating
+ its broader applicability in securing diverse IoT and networking components.
+Summary of Results:
+These three test cases demonstrate Anveshan’s core functionalities: 
+accurate
+ device identification through image analysis, provision of tailored security recommendations, and interactive chatbot support. The system consistently recognized different device types and delivered relevant security measures. The chatbot effectively addressed user queries, providing detailed and context-aware responses. These results validate Anveshan’s potential as a user-friendly and effective tool for enhancing device security
+Fig.
+2
+: 
+Uploading an image of an Apple Watch Series 6
+ 
+Fig.3: Security measures of Apple Watch Series 6
+Fig.
+4
+: 
+Chatbot Offering Comprehensive Assistance for User
+ First
+ Quer
+y
+Fig.
+5
+:
+ Chatbot Offering Comprehensive Assistance for User 
+Second 
+Quer
+y
+ 
+Fig.
+6
+:
+ Continuation of Chatbot Offering Comprehensive Assistance for User Second Query
+Fig.
+7
+: Uploading an image of an Apple 
+Homepod
+ Mini
+  
+Fig.
+8
+: Security measures of Apple 
+Homepod
+ Mini
+Fig.
+9
+: Chatbot Offering Comprehensive Assistance for User First Query
+Fig.
+10
+:
+ Chatbot Offering Comprehensive Assistance for User Second Query
+Fig.
+11
+: Uploading an image of 
+D-Link Wireless Router
+Fig.
+12
+: Security measures of 
+D-Link Wireless Router
+Fig.
+1
+3: 
+Continuation of Security measures of D-Link Wireless Router
+Fig.
+14
+: Chatbot Offering Comprehensive Assistance for User First Query
+  
+Conclusion
+This research presented Anveshan, an innovative web application designed to democratize device security through the integration of AI-powered image recognition and a conversational chatbot. By leveraging the Pixtral model for accurate device identification and a fine-tuned Mistral LLM for generating tailored security recommendations and engaging in interactive dialogue, Anveshan simplifies the complex process of securing networking and IoT devices. The system's user-friendly interface, built with Streamlit, ensures accessibility for individuals with varying technical backgrounds, thereby empowering a broader audience to enhance their digital security posture.
+The results obtained from testing Anveshan with diverse device types, including an Apple Watch Series 6, an Apple HomePod Mini, and a D-Link wireless router, demonstrate the system's effectiveness in accurately identifying devices and providing relevant, context-aware security measures. The chatbot's ability to respond to user queries with detailed and informative answers further validates Anveshan's potential as a valuable tool for simplifying device security.
+Future work will focus on expanding the device dataset to encompass a wider range of devices and vulnerabilities, further improving the accuracy and comprehensiveness of the security recommendations. Additionally, we aim to explore the integration of real-time threat intelligence and automated security configuration features to enhance the proactive security capabilities of Anveshan.
+R
+EFERENCES
+[1] 
+L. Atzori, A. Iera, and G. Morabito, “Understanding the Internet of Things: definition, potentials, and societal role of a 
+fast evolving
+ paradigm,� Ad Hoc Networks, vol. 56, pp. 122–140, Mar. 2017, 
+doi
+: 
+https://doi.org/10.1016/j.adhoc.2016.12.004
+. 
+ 
+ 
+[2] R. Kumar, H. 
+Anandaram
+, K. Joshi, V. Kumar, J. Reshi and R. K. Saini, "Internet of things (IoT) applications and Challenges: A Study," 2022 7th International Conference on Computing, Communication and Security (ICCCS), Seoul, Korea, Republic of, 2022, pp. 1-6, 
+doi
+: 10.1109/ICCCS55188.2022.10079508. 
+ 
+[3] F. G. Alotaibi, N. Clarke, and S. M. Furnell, “A novel approach for improving information security management and awareness for home environments,� Information & Computer Security, vol. 29, no. 1, pp. 25–48, Aug. 2020, 
+doi
+: 
+https://doi.org/10.1108/ics-05-2020-0073
+. 
+ 
+[4] K. Kandasamy, S. Srinivas, K. Achuthan, and V. P. Rangan, “IoT cyber risk: a holistic analysis of cyber risk assessment frameworks, risk vectors, and risk ranking process,� EURASIP Journal on Information Security, vol. 2020, no. 1, May 2020, 
+doi
+: 
+https://doi.org/10.1186/s13635-020-00111-0
+. 
+ 
+[5] M. A. K. 
+Raiaan
+ et al., "A Review on Large Language Models: Architectures, Applications, Taxonomies, Open Issues and Challenges," in IEEE Access, vol. 12, pp. 26839-26874, 2024, 
+doi
+: 10.1109/ACCESS.2024.3365742. 
+ 
+[6] Z. 
+Chkirbene
+, R. 
+Hamila
+, A. 
+Gouissem
+ and U. Devrim, "Large Language Models (LLM) in Industry: A Survey of Applications, Challenges, and Trends," 2024 IEEE 21st International Conference on Smart Communities: Improving Quality of Life using AI, Robotics and IoT (HONET), Doha, Qatar, 2024, pp. 229-234, 
+doi
+: 10.1109/HONET63146.2024.10822885. 
+ 
+[7] O. 
+Friha
+, M. Amine 
+Ferrag
+, B. 
+Kantarci
+, B. Cakmak, A. 
+Ozgun
+ and N. 
+Ghoualmi
+-Zine, "LLM-Based Edge Intelligence: A Comprehensive Survey on Architectures, Applications, Security and Trustworthiness," in IEEE Open Journal of the Communications Society, vol. 5, pp. 5799-5856, 2024, 
+doi
+: 10.1109/OJCOMS.2024.3456549 
+ 
+[8] Som Sekhar Bhattacharyya, “Study of adoption of artificial intelligence technology-driven natural large language model-based chatbots by firms for customer service interaction,� Journal of Science and Technology Policy Management, May 2024, 
+doi
+: 
+https://doi.org/10.1108/jstpm-11-2023-0201
+. 
+ 
+[9] M. 
+Xiaoliang
+, Zhao 
+RuQiang
+, L. Ying, Deng 
+Congjian
+, and Du Dequan, “Design of a large language model for improving customer service in telecom operators,� Electronics Letters, vol. 60, no. 10, May 2024, 
+doi
+: 
+https://doi.org/10.1049/ell2.13218
+. 
+ 
+[10] R. Murali, D. M. 
+Dhanalakshmy
+, V. 
+Avudaiappan
+ and G. Sivakumar, "Towards Assessing the Credibility of Chatbot Responses for Technical Assessments in Higher Education," 2024 IEEE Global Engineering Education Conference (EDUCON), Kos Island, Greece, 2024, pp. 1-9, 
+doi
+: 10.1109/EDUCON60312.2024.10578934. 
+ 
+[11] A. Arun, A. B. K V, G. Rajesh, P. H and B. Bhadran, "Transforming Healthcare: Unified Medical Identification and AI-Enabled Treatment Advancements," 2024 Second International Conference on Inventive Computing and Informatics (ICICI), 
+Bangalore
+, India, 2024, pp. 378-382, 
+doi
+: 10.1109/ICICI62254.2024.00068. 
+ 
+[12] Z. Yang et al., “Talk2Care: An LLM-based Voice Assistant for Communication between Healthcare Providers and Older Adults,� Proceedings of the ACM on Interactive Mobile Wearable and Ubiquitous Technologies, vol. 8, no. 2, pp. 1–35, May 2024, 
+doi
+: 
+https://doi.org/10.1145/3659625
+. 
+ 
+[13] F. Wei et al., "Empirical Study of LLM Fine-Tuning for Text Classification in Legal Document Review," 2023 IEEE International Conference on Big Data (
+BigData
+), Sorrento, Italy, 2023, pp. 2786-2792, 
+doi
+: 10.1109/BigData59044.2023.10386911. 
+ 
+[14] A. George, A. Jose, A. F, P. Prabhakar, P. B. 
+Pati
+ and S. Parida, "Enhancing Legal Decision Making: WRIT Case Outcome Prediction with 
+LegalBERT
+ Embeddings and AdaBoost Classifier," 2024 IEEE International Conference on Contemporary Computing and Communications (InC4), 
+Bangalore
+, India, 2024, pp. 1-6, 
+doi
+: 10.1109/InC460750.2024.10649245. 
+ 
+[15] K. 
+Lakkaraju
+, S. E. Jones, S. K. R. 
+Vuruma
+, V. 
+Pallagani
+, B. C. 
+Mup-pasani
+ and B. Srivastava, "
+Llms
+ for financial advisement: A fairness and efficacy study in personal decision making", 4th ACM International Conference on AI in Finance, pp. 100-107, 2023. 
+ 
+[16] N. 
+Dongare
+, A. 
+Bhirange
+, S. 
+Kharche
+, A. 
+Buchade
+ and P. 
+Mahalle
+, "Equity Research Chatbot Using LLM: A Responsive Agent for Investment Research," 2024 IEEE Pune Section International Conference (
+PuneCon
+), Pune, India, 2024, pp. 1-5, 
+doi
+: 10.1109/PuneCon63413.2024.10895230. 
+ 
+[17] Singh, Harmanpreet, Nikhil Verma, 
+Yixiao
+ Wang, Manasa Bharadwaj, Homa 
+Fashandi
+, Kevin Ferreira, and Chul Lee. "Personal Large Language Model Agents: A Case Study on Tailored Travel Planning." In Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing: Industry Track, pp. 486-514. 2024. 
+ 
+[18] Nair, V.K., Chandana Nair, B., Anupama, K., Ajayan, C, " Tech Meets Transcendence: ChatGPT and the Next Chapter of Spiritual Tourism, 
+"  In
+: 
+Alareeni
+, B., Hamdan, A. (eds) Navigating the Technological Tide: The Evolution and Challenges of Business Model Innovation. ICBT 2024. Lecture Notes in Networks and Systems, vol 1082. Springer, Cham. 
+https://doi.org/10.1007/978-3-031-67434-1_10
+ 
+ 
+[19] Scotti, V., Carman, M.J, "LLM Support for Real-Time Technical Assistance " In: 
+Bifet
+, A., et al. Machine Learning and Knowledge Discovery in Databases. Research Track and Demo Track. ECML PKDD 2024. Lecture Notes in Computer 
+Science(
+), vol 14948. Springer, Cham. 
+https://doi.org/10.1007/978-3-031-70371-3_26
+ 
+ 
+[20] K. 
+Boyina
+, G. M. Reddy, G. 
+Akshita
+ and P. C. Nair, "Zero-Shot and Few-Shot Learning for Telugu News Classification: A Large Language Model Approach," 2024 15th International Conference on Computing Communication and Networking Technologies (ICCCNT), Kamand, India, 2024, pp. 1-7, 
+doi
+: 10.1109/ICCCNT61001.2024.10724558. 
+ 
+[21] M. 
+Pituxcoosuvarn
+, W. 
+Vijitkunsawat
+ and Y. Murakami, "Addressing Sociolinguistic Challenges in Machine Translation: An LLM-Based Approach for Politeness and Formality," 2024 8th International Conference on Information Technology (
+InCIT
+), Chonburi, Thailand, 2024, pp. 757-762, 
+doi
+: 10.1109/InCIT63192.2024.10810615. 
+ 
+[22] L. Shen, H. Li, Y. Wang and H. Qu, "From Data to Story: Towards Automatic Animated Data Video Creation with LLM-Based Multi-Agent Systems," 2024 IEEE VIS Workshop on Data Storytelling in an Era of Generative AI (GEN4DS), St. Pete Beach, FL, USA, 2024, pp. 20-27, 
+doi
+: 10.1109/GEN4DS63889.2024.00008. 
+ 
+[23] G. M P, H. S, J. T and S. L, "Multimodal Content Generation: A Project for AI Creativity," 2024 International Conference on Emerging Research in Computational Science (ICERCS), Coimbatore, India, 2024, pp. 1-5, 
+doi
+: 10.1109/ICERCS63125.2024.10894945. 
+ 
+[24] E. Schiller, A. Aidoo, J. Fuhrer, J. Stahl, M. Ziörjen, and B. Stiller, “Landscape of IoT security,� Computer Science Review, vol. 44, no. 44, p. 100467, May 2022, doi: 
+https://doi.org/10.1016/j.cosrev.2022.100467
+. 
+ 
+ 
+ 
+ 

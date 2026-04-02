@@ -1,0 +1,109 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\auth\login.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel Secure Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Core Logic -->
+    <script src="../common/api.js"></script>
+    <script src="../common/secure-storage.js"></script>
+    <script src="../common/security.js"></script>
+    <script src="../common/captcha.js"></script>
+    <!-- Page Logic -->
+    <script src="login.js" defer></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+    <style>
+        /* Anti-Exfiltration Styles */
+        .secure-field {
+            -webkit-text-security: disc; /* Hides text even in 'text' inputs if supported */
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        /* Disable Selection */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 h-screen flex flex-col justify-center items-center no-select" oncontextmenu="return false;">
+
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#1e293b 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+    <div class="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl relative z-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-600/20 text-blue-500 rounded-xl mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white tracking-wide">Sentinel Access</h2>
+            <p class="text-slate-500 text-xs mt-2 font-mono">ZERO-TRUST AUTHENTICATION GATEWAY</p>
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+            
+            <!-- Username -->
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-1 uppercase">Identity</label>
+                <input type="text" id="username" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:border-blue-500 outline-none text-white transition" placeholder="Username" autocomplete="off">
+            </div>
+
+            <!-- Password (Anti-Copy/Paste) -->
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-1 uppercase">Credentials</label>
+                <input type="password" id="password" 
+                    class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:border-blue-500 outline-none text-white transition secure-field" 
+                    placeholder="••••••••" 
+                    autocomplete="new-password"
+                    oncopy="return false" 
+                    onpaste="return false" 
+                    oncut="return false">
+            </div>
+
+            <!-- Living CAPTCHA Container -->
+            <div class="pt-2">
+                <div class="flex justify-between items-end mb-2">
+                    <label class="text-xs font-mono text-slate-400 uppercase">Human Verification</label>
+                    <button type="button" onclick="captchaHandler.refresh()" class="text-xs text-blue-400 hover:text-white">Refresh Challenge</button>
+                </div>
+                
+                <!-- SVG Injection Target -->
+                <div id="captcha-image" class="w-full h-20 bg-white rounded flex items-center justify-center overflow-hidden mb-2">
+                    <!-- Dynamic Content -->
+                </div>
+
+                <input type="text" id="captcha-answer" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:border-blue-500 outline-none text-white text-center tracking-widest font-bold uppercase" placeholder="ENTER CODE" autocomplete="off">
+                
+                <!-- Hidden Token Storage -->
+                <input type="hidden" id="captcha-id">
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-900/20 mt-4 flex justify-center items-center gap-2">
+                <span>SECURE LOGIN</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="signup.html" class="text-sm text-slate-500 hover:text-blue-400 transition">Initialize New Wallet</a>
+        </div>
+
+        <!-- Status Bar -->
+        <div id="status-msg" class="mt-4 text-center text-xs font-mono h-4 text-red-400"></div>
+    </div>
+
+    <div class="mt-8 flex items-center gap-2 text-slate-600 text-xs font-mono">
+        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+        SYSTEM OPERATIONAL v5.0
+    </div>
+
+</body>
+</html>

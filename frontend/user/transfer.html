@@ -1,0 +1,57 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\user\transfer.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel Transfer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../common/api.js"></script>
+    <script src="../common/secure-storage.js"></script>
+    <script src="../common/security.js"></script>
+    <script src="transfer.js" defer></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-200 h-screen flex">
+
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6">
+        <h1 class="font-bold text-white tracking-wide mb-8">SENTINEL</h1>
+        <a href="dashboard.html" class="block py-2 text-slate-400 hover:text-white">← Back to Wallet</a>
+    </aside>
+
+    <main class="flex-1 p-10 flex flex-col justify-center items-center">
+        
+        <div class="w-full max-w-lg bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">Send Money</h2>
+                <p class="text-slate-500 text-sm">Atomic Peer-to-Peer Transfer</p>
+            </div>
+
+            <form id="transferForm" class="space-y-6">
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1 uppercase">Recipient Username</label>
+                    <input type="text" id="recipient" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg text-white focus:border-emerald-500 outline-none" placeholder="e.g. bob">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1 uppercase">Amount (INR)</label>
+                    <input type="number" id="amount" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg text-white focus:border-emerald-500 outline-none text-2xl font-mono" placeholder="0.00">
+                </div>
+
+                <div class="p-4 bg-yellow-900/10 border border-yellow-900/30 rounded-lg text-xs text-yellow-500">
+                    ⚠️ <b>Irreversible Action:</b> Funds are moved directly between UTXOs. Ensure recipient username is correct.
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-emerald-900/20">
+                    SIGN & SEND TRANSACTION
+                </button>
+            </form>
+
+            <div id="status" class="mt-6 hidden text-center"></div>
+        </div>
+
+    </main>
+</body>
+</html>

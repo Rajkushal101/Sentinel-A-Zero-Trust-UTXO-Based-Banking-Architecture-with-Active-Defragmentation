@@ -1,0 +1,123 @@
+<!-- C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\frontend\admin\monitor.html -->
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Security Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../common/api.js"></script>
+    <script src="../common/secure-storage.js"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { slate: { 850: '#151e2e' } } } } }
+    </script>
+</head>
+
+<body class="bg-slate-950 text-white p-6" style="display:block">
+
+    <header class="flex justify-between items-center mb-8 border-b border-slate-800 pb-6">
+        <div>
+            <h1 class="text-3xl font-bold text-red-500 flex items-center gap-3">
+                <span class="animate-pulse">🚨</span> SECURITY OPERATIONS CENTER
+            </h1>
+            <p class="text-slate-500 text-sm mt-1">Real-time Forensic Monitoring</p>
+        </div>
+        <a href="dashboard.html" class="text-slate-400 hover:text-white">Close Monitor</a>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- Live Metrics -->
+        <div class="space-y-4">
+            <div class="bg-red-950/30 border border-red-900/50 p-6 rounded-xl">
+                <p class="text-red-400 text-xs uppercase font-bold">Active Threats</p>
+                <h2 class="text-4xl font-mono mt-2" id="threat-count">0</h2>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+                <p class="text-slate-400 text-xs uppercase font-bold">Failed Logins (1h)</p>
+                <h2 class="text-4xl font-mono mt-2 text-yellow-500">12</h2>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+                <p class="text-slate-400 text-xs uppercase font-bold">CAPTCHA Blocks</p>
+                <h2 class="text-4xl font-mono mt-2 text-blue-500">84</h2>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="lg:col-span-3 bg-slate-900 border border-slate-800 p-6 rounded-xl">
+            <h3 class="font-bold mb-4 text-slate-300">Attack Vectors (Real-time)</h3>
+            <div class="h-64">
+                <canvas id="attackChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Event Log -->
+        <div class="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+            <div class="p-4 bg-slate-800/50 border-b border-slate-800 font-bold text-slate-300">Live Security Feed</div>
+            <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-slate-950 text-slate-500">
+                    <tr>
+                        <th class="p-4">Time</th>
+                        <th class="p-4">Event</th>
+                        <th class="p-4">IP Address</th>
+                        <th class="p-4">Severity</th>
+                        <th class="p-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="event-log" class="divide-y divide-slate-800">
+                    <!-- Events Injected Here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        // Mock Data for Prototype Presentation
+        const events = [
+            { time: '10:42:01', event: 'SQL Injection Attempt', ip: '192.168.1.105', level: 'CRITICAL' },
+            { time: '10:41:55', event: 'CAPTCHA Failure', ip: '45.33.22.11', level: 'LOW' },
+            { time: '10:40:12', event: 'Right-Click Detected', ip: '10.0.0.5', level: 'MEDIUM' },
+        ];
+
+        const tbody = document.getElementById('event-log');
+        events.forEach(ev => {
+            const color = ev.level === 'CRITICAL' ? 'text-red-500 font-bold' : (ev.level === 'MEDIUM' ? 'text-yellow-500' : 'text-blue-500');
+            const row = `
+                <tr class="hover:bg-slate-800/50 transition">
+                    <td class="p-4 font-mono text-xs">${ev.time}</td>
+                    <td class="p-4">${ev.event}</td>
+                    <td class="p-4 font-mono text-xs">${ev.ip}</td>
+                    <td class="p-4 ${color}">${ev.level}</td>
+                    <td class="p-4"><button class="text-xs bg-slate-800 hover:bg-red-900/50 text-slate-300 hover:text-red-400 px-2 py-1 rounded border border-slate-700 transition">Block IP</button></td>
+                </tr>`;
+            tbody.innerHTML += row;
+        });
+
+        // Chart
+        new Chart(document.getElementById('attackChart'), {
+            type: 'bar',
+            data: {
+                labels: ['SQL Injection', 'XSS', 'Brute Force', 'Bot Traffic', 'Man-in-Middle'],
+                datasets: [{
+                    label: 'Blocked Attempts',
+                    data: [12, 19, 3, 55, 2],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: '#1e293b' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

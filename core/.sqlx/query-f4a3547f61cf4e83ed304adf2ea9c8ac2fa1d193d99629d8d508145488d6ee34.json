@@ -1,0 +1,70 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id, user_id, triggered_by, triggered_at, old_utxo_count, new_utxo_count, total_amount, status, error_message\n         FROM defrag_history WHERE user_id = $1 ORDER BY triggered_at DESC",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "user_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "triggered_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "triggered_at",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 4,
+        "name": "old_utxo_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "new_utxo_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "total_amount",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 7,
+        "name": "status",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 8,
+        "name": "error_message",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "f4a3547f61cf4e83ed304adf2ea9c8ac2fa1d193d99629d8d508145488d6ee34"
+}

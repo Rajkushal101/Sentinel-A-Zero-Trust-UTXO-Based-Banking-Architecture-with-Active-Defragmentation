@@ -1,0 +1,21 @@
+\ProvidesPackage{ismir}
+\typeout{ISMIR style template - Mocked for Compilation}
+\twocolumn
+\flushbottom
+\columnsep 0.25in
+\textheight 9in
+\textwidth 6.75in
+\topmargin -0.5in
+\oddsidemargin -0.125in
+\evensidemargin -0.125in
+
+\def\twoauthors#1#2#3#4{
+  \author{
+    \begin{tabular}{cc}
+      \begin{tabular}[t]{c} \large\textbf{#1} \\ #2 \end{tabular} & \hspace{0.5in}
+      \begin{tabular}[t]{c} \large\textbf{#3} \\ #4 \end{tabular}
+    \end{tabular}
+  }
+}
+
+\date{}

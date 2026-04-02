@@ -1,0 +1,46 @@
+# C:\Users\rajku\Downloads\sem 6\AC applied cryptography\projects\PROJECT_SENTINEL_V4\SENTINEL_CBDC_PROJECT\core\Cargo.toml
+
+[package]
+name = "sentinel-core"
+version = "0.5.0"
+edition = "2021"
+
+[dependencies]
+# --- Web Framework (The Nervous System) ---
+axum = { version = "0.7.4", features = ["macros"] }
+tokio = { version = "1.36.0", features = ["full"] }
+tower = { version = "0.4.13", features = ["util"] }
+tower-http = { version = "0.5.1", features = ["fs", "trace", "cors", "limit"] }
+
+# --- Database (The Vault) ---
+# SQLx 0.7 is required for Axum 0.7 compatibility
+sqlx = { version = "0.7.3", features = ["runtime-tokio-native-tls", "postgres", "uuid", "chrono", "macros"] }
+
+# --- Serialization (The Translator) ---
+serde = { version = "1.0.197", features = ["derive"] }
+serde_json = "1.0.114"
+
+# --- Utilities ---
+dotenvy = "0.15.7"
+uuid = { version = "1.7.0", features = ["v4", "serde"] }
+chrono = { version = "0.4.34", features = ["serde"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+once_cell = "1.19.0" # Used for Rate Limiter and Regex Singletons
+
+# --- Security & Cryptography (The Shield) ---
+aes-gcm = "0.10.3"
+base64 = "0.21.7"
+rand = "0.8.5"
+sha2 = "0.10.8"
+hmac = "0.12.1"
+argon2 = "0.5.3"
+jsonwebtoken = "9.2.0"
+regex = "1.10.3"
+
+# --- CAPTCHA Generation (The Visualizer) ---
+# CRITICAL: We lock image to 0.24.9 because imageproc 0.23 does not support image 0.25 yet.
+image = "0.24.9"      
+imageproc = "0.23.0"  
+rusttype = "0.9.3"
+hex = "0.4.3"

@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT \n            COALESCE(SUM(value), 0)::BIGINT as balance, \n            COUNT(*) as count \n         FROM tokens WHERE owner_id = $1 AND status = 'ACTIVE'",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "balance",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "count",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "9f18b83fce7b95b1ac47c4aee7376c65e6de0f988ed17e1d6fa2e72b0d015f39"
+}
